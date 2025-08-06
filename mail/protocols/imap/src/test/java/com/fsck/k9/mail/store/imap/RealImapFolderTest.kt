@@ -388,7 +388,7 @@ class RealImapFolderTest {
         imapConnection.stub {
             on { hasCapability(Capabilities.MOVE) } doReturn true
         }
-        val destinationFolder = createFolder("la vache dit møø")
+        val destinationFolder = createFolder("la vache dit møø", folderNameCodec)
         val messages = listOf(createImapMessage("1"))
         setupMoveResponses("x OK [COPYUID 23 1 101] Success")
         sourceFolder.open(OpenMode.READ_WRITE)
@@ -1600,8 +1600,8 @@ class RealImapFolderTest {
         return response
     }
 
-    private fun createFolder(folderName: String): RealImapFolder {
-        return RealImapFolder(internalImapStore, testConnectionManager, folderName, FolderNameCodec())
+    private fun createFolder(folderName: String, folderNameCodec: FolderNameCodec = FolderNameCodec()): RealImapFolder {
+        return RealImapFolder(internalImapStore, testConnectionManager, folderName, folderNameCodec)
     }
 
     private fun createImapMessage(uid: String): ImapMessage {
